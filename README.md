@@ -2,31 +2,31 @@
 Trabalho da disciplina Sistemas  Ubíquos (ESP203) do curso Mestrado Profissional em Engenharia de Sistemas e Produtos do IFBA, 2019.
 
 
-#Install
+# Install
 
 Clonar o repositório com o seguinte comando:
-$ git clone https://github.com/icarojerry/simple-dimension-analyzer.git
+<code>$ git clone https://github.com/icarojerry/simple-dimension-analyzer.git</code>
 
 Entrar na pasta do projeto
-$ cd simple-dimension-analyzer
+<code>$ cd simple-dimension-analyzer</code>
 
 Instala/Atualiza o pip
-$ python3 -m pip install --user --upgrade pip
+<code>$ python3 -m pip install --user --upgrade pip</code>
 
 Verifica a versão do pip
-$ py -m pip --version 
+<code>$ py -m pip --version </code>
 
 Cria o ambiente virtual
-$ python3 -m virtualenv env
+<code>$ python3 -m virtualenv env</code>
 
 Ativa o ambiente virtual
-$ source env/bin/activate
+<code>$ source env/bin/activate</code>
 
 Instala os pacotes utilizados no projeto
-$ env/bin/pip install -r requirements.txt
+<code>$ env/bin/pip install -r requirements.txt</code>
 
 
-#Run Server
+# Run Server
 
 Para executar o servidor 
-$ python manage.py runserver
+<code>$ python manage.py runserver</code>
