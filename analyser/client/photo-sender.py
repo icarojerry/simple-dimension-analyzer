@@ -7,19 +7,6 @@ import random
 import requests
 import config
 
-
-GPIO.setmode(GPIO.BCM)
-
-#Button to GPIO23
-GPIO.setup(config.client.pin['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-
-# Define TRIG como saída digital
-# Define ECHO como entrada digital
-GPIO.setup(config.client.pin['trigger'], GPIO.OUT)
-GPIO.setup(config.client.pin['echo'], GPIO.IN)
-
-#
 def takePicture():
     pygame.init()
     pygame.camera.init()
@@ -83,13 +70,32 @@ def distance():
 
 
 def waitTriggerButton():
+    goOut = false
+    print(config.client['pin'].button)
     while GPIO.input(config.client['pin'].button):
-        pass
+        while not GPIO.input(config.client['pin'].button):
+            goOut = true;
+
+        if goOut:
+            break
+        
+        time.sleep(0.5)
 
     return
 
+def setup():
+    GPIO.setmode(GPIO.BCM)
+
+    #Button to GPIO23
+    GPIO.setup(config.client.pin['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # Define TRIG como saída digital
+    GPIO.setup(config.client.pin['trigger'], GPIO.OUT)
+    # Define ECHO como entrada digital
+    GPIO.setup(config.client.pin['echo'], GPIO.IN)
+
 if __name__ == '__main__':
     try:
+        setup()
         while True:
             waitingTriggerButton()
 
@@ -110,6 +116,7 @@ if __name__ == '__main__':
             img_file.close()
 
             print ("Measured Distance = %.1f cm" % dist)
+            print ("Server response" % response)
             time.sleep(0.2)
 
     except:
