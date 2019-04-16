@@ -3,6 +3,7 @@ djangorestframework==3.9.2
 imutils==0.5.2
 Markdown==3.1
 numpy==1.16.2
+opencv-python==4.1.0.25
 pytz==2019.1
 RPi.GPIO==0.6.5
 scipy==1.2.1
