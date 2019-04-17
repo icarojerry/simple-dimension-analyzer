@@ -1,3 +1,6 @@
+import sys
+sys.path.append("./analyser/")
+
 from scipy.spatial import distance as dist
 from imutils import perspective
 from imutils import contours
@@ -5,29 +8,24 @@ import numpy as np
 import argparse
 import imutils
 import cv2
-import 
+from parameters.config import server
 
 def _midpoint(ptA, ptB):
 	return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
-#
-cap = cv2.VideoCapture(0)
-pictureWidth = 4.0157
-distanceCam = 12.59843
+def _calc_image_size(imagePath, distance, pictureWidth):
+	a= -2.3088
+	b= 85.957
+	densidade= a * distance + b 
 
+	print('densidade: ' + str(densidade))
 
-# load the image, convert it to grayscale, and blur it slightly
-_, image = cap.read()
+	image = cv2.imread(imagePath)
 
-def calc_image_size(self, image, distance)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
-	cv2.imshow("Image1", gray)
 	gray = cv2.cvtColor(gray, cv2.COLOR_BGR2RGBA )
-	cv2.imshow("Image2", gray)
 	#gray = cv2.cvtColor(gray, cv2.COLOR_RGBA2BGR )
-	#cv2.imshow("Image3", gray)
 	#gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
-	#cv2.imshow("Image4", gray)
 	gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
 	# perform edge detection, then perform a dilation + erosion to
@@ -111,13 +109,8 @@ def calc_image_size(self, image, distance)
 		dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
 		print("dA: " + str(dA))
-		print("dA: " + str(dB))
-		cv2.waitKey(0)
-		cv2.imwrite("Image",orig)
-		file = "D:\\ALUNO ESPECIAL IFBA\\ESP203 sist ubiquos\\fotosalva.png"
+		print("dB: " + str(dB))
 		
-		
-
 		# if the pixels per metric has not been initialized, then
 		# compute it as the ratio of pixels to supplied metric
 		# (in this case, inches)
@@ -125,8 +118,8 @@ def calc_image_size(self, image, distance)
 			pixelsPerMetric = dB / pictureWidth
 
 		# compute the size of the object
-		dimA = dA / pixelsPerMetric
-		dimB = dB / pixelsPerMetric
+		dimA = dA / densidade
+		dimB = dB / densidade
 
 		print("dimA: " + str(dimA))
 		print("dimB: " + str(dimB))
@@ -142,3 +135,10 @@ def calc_image_size(self, image, distance)
 		# show the output image
 		cv2.imshow("Image", orig)
 		cv2.waitKey(0)
+
+
+if __name__ == '__main__':
+	distanceCam = 22.01
+	picturePath = server['dir_img'] + '/example_01.png'
+
+	_calc_image_size(picturePath, distanceCam, 1.0)

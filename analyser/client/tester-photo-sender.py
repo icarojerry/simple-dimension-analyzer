@@ -20,10 +20,15 @@ def waitingTriggerButton():
     return
 
 def setup():
-    pass
+    print(type(client['pin']['echo']))
+    val = 0/0
 
 if __name__ == '__main__':
-    setup()
+    try:
+        setup()
+    except Exception as error:
+        print(error)
+        exit()
 
     waitingTriggerButton()
 

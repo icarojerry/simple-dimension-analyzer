@@ -10,12 +10,15 @@ class PictureUploadView(APIView):
     parser_class = (JSONParser, MultiPartParser,)
 
     def post(self, request, *args, **kwargs):
-      print(request.data)
       file_serializer = PictureSerializer(data=request.data)
-      
-      #print(file_serializer.errors)
 
       if file_serializer.is_valid():
+          #TODO
+          #1- get distance from params
+          #2- calculate size image and save
+          #e.g. file_serializer.distance = request.distance
+          #e.g. file_serializer.calculateSize()
+          
           file_serializer.save()
           return Response(file_serializer.data, status=status.HTTP_201_CREATED)
       else:
