@@ -140,5 +140,6 @@ if __name__ == '__main__':
             print(response.text)
             time.sleep(0.2)
 
-    except:
+    except Exception as error:
+        print(error)
         GPIO.cleanup()
