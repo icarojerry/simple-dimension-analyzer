@@ -138,7 +138,7 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 
 
 if __name__ == '__main__':
-	distanceCam = 22.01
-	picturePath = server['dir_img'] + '/example_01.png'
+	distanceCam = 21.3
+	picturePath = server['dir_img'] + '/2019-04-17_171601.jpg'
 
 	_calc_image_size(picturePath, distanceCam, 1.0)
