@@ -42,9 +42,9 @@ def distance():
     # Gera um pulso de 10ms em TRIG.
     # Essa ação vai resultar na transmissão de ondas ultrassônicas pelo
     # transmissor do módulo sonar.
-    GPIO.output(client.pin['trigger'], True)
+    GPIO.output(client['pin']['trigger'], True)
     time.sleep(0.00001)
-    GPIO.output(client.pin['trigger'], False)
+    GPIO.output(client['pin']['trigger'], False)
  
     # Atualiza a variável start_t enquanto ECHO está em nível lógico baixo.
     # Quando ECHO trocar de estado, start_t manterá seu valor, marcando
@@ -95,18 +95,18 @@ def setup():
     print("pin mode defined")
 
     #Button to GPIO23
-    print("define button send with pin: " + client.pin['button'])
-    GPIO.setup(client.pin['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    print("define button send with pin: " + client['pin']['button'])
+    GPIO.setup(client['pin']['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     print("button sender configured")
 
     # Define TRIG como saída digital
-    print("define trigger sensor with pin: " + client.pin['trigger'])
-    GPIO.setup(client.pin['trigger'], GPIO.OUT)
+    print("define trigger sensor with pin: " + client['pin']['trigger'])
+    GPIO.setup(client['pin']['trigger'], GPIO.OUT)
     print("trigger sensor configured")
     
     # Define ECHO como entrada digital
-    print("define echo sensor with pin: " + client.pin['echo'])
-    GPIO.setup(client.pin['echo'], GPIO.IN)
+    print("define echo sensor with pin: " + client['pin']['echo'])
+    GPIO.setup(client['pin']['echo'], GPIO.IN)
     print("trigger echo sensor configured")
 
 
