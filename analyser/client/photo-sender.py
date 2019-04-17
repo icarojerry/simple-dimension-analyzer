@@ -95,17 +95,17 @@ def setup():
     print("pin mode defined")
 
     #Button to GPIO23
-    print("define button send with pin: " + client['pin']['button'])
+    print("define button send with pin: " + str(client['pin']['button']))
     GPIO.setup(client['pin']['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     print("button sender configured")
 
     # Define TRIG como saída digital
-    print("define trigger sensor with pin: " + client['pin']['trigger'])
+    print("define trigger sensor with pin: " + str(client['pin']['trigger']))
     GPIO.setup(client['pin']['trigger'], GPIO.OUT)
     print("trigger sensor configured")
     
     # Define ECHO como entrada digital
-    print("define echo sensor with pin: " + client['pin']['echo'])
+    print("define echo sensor with pin: " + str(client['pin']['echo']))
     GPIO.setup(client['pin']['echo'], GPIO.IN)
     print("trigger echo sensor configured")
 
