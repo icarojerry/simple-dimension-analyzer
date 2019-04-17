@@ -1,6 +1,7 @@
 import sys
 sys.path.append("./analyser/")
 
+import os
 import time
 import cv2
 import random
@@ -24,35 +25,35 @@ def setup():
 if __name__ == '__main__':
     setup()
 
-    while True:
-        waitingTriggerButton()
+    waitingTriggerButton()
 
-        #GPIO.output(24, True)
-        dist = distance()
-        picturePath = takePicture()
+    #GPIO.output(24, True)
+    dist = distance()
+    picturePath = takePicture()
 
-        try:
-            img_file = open(picturePath, 'rb')
-        except FileNotFoundError:
-            print('Image: ' + picturePath + ' not found...')
-            exit()
+    try:
+        img_file = open(picturePath, 'rb')
+    except FileNotFoundError:
+        print('Image: ' + picturePath + ' not found...')
+        exit()
 
-        #prepare parameters to send request
-        files = {'media': img_file}
-        headers = {'Content-Type' : 'image/jpeg'}
-        payload = {'distance' : dist, 'fileName': picturePath}
+    #prepare parameters to send request
+    headers = {'Content-Type' : 'multipart/form-data'}
+    payload = {'distance' : dist, 'fileName': os.path.basename(img_file.name)}
 
-        #send the data to server
-        try:
-            response = requests.post(server['url'], data=img_file.read(), headers=headers, verify=False, params=payload)
-        except:
-            print("Error sending message to server: " + server['url'])
-            exit()
-        img_file.close()
 
-        print(response)
+    files = {'media': img_file.read()}
+    # requests.post(server['url'], files=files)
+    #send the data to server
+    try:
+        response = requests.post(server['url'], files = {'file': open(picturePath, 'rb')}, params=payload)
 
-        print ("Measured Distance = %.1f cm" % dist)
-        print ("Server response" % response)
-        time.sleep(0.2)
+    except:
+        print("Error sending message to server: " + server['url'])
+        exit()
+    img_file.close()
+
+    print(response.text)
+    time.sleep(0.2)
+
 

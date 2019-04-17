@@ -1,6 +1,7 @@
 import sys
 sys.path.append("./analyser/")
 
+import os
 import RPi.GPIO as GPIO
 import time
 import cv2
@@ -115,7 +116,7 @@ if __name__ == '__main__':
             #prepare parameters to send request
             files = {'media': img_file}
             headers = {'Content-Type' : 'image/jpeg'}
-            payload = {'distance' : dist, 'fileName': picturePath}
+            payload = {'distance' : dist, 'fileName': os.path.basename(img_file.name)}
 
             #send the data to server
             try:
