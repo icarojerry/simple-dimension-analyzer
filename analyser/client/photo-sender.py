@@ -24,7 +24,7 @@ def takePicture():
     cam.stop()
 
     timestamp = time.strftime("%Y-%m-%d_%H%M%S", time.localtime())
-    filename = "%s/%s.jpg" % (server['dir_img'], timestamp)
+    filename = "%s/%s.jpg" % (client['dir_img'], timestamp)
     print ("saving into %s" % filename)
 
     pygame.image.save(image, filename)
@@ -117,6 +117,7 @@ if __name__ == '__main__':
         while True:
             waitingTriggerButton()
             dist = distance()
+            print("distance: " + str(dist))
             picturePath = takePicture()
 
             try:
