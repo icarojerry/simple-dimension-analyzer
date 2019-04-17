@@ -111,24 +111,19 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 		print("dA: " + str(dA))
 		print("dB: " + str(dB))
 		
-		# if the pixels per metric has not been initialized, then
-		# compute it as the ratio of pixels to supplied metric
-		# (in this case, inches)
-		if pixelsPerMetric is None:
-			pixelsPerMetric = dB / pictureWidth
 
 		# compute the size of the object
-		dimA = dA / densidade
-		dimB = dB / densidade
+		dimA = dA / (densidade / 2.54)
+		dimB = dB / (densidade / 2.54)
 
 		print("dimA: " + str(dimA))
 		print("dimB: " + str(dimB))
 
 		# draw the object sizes on the image
-		cv2.putText(orig, "{:.1f}in".format(dimA),
+		cv2.putText(orig, "{:.2f}in".format(dimA),
 			(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
-		cv2.putText(orig, "{:.1f}in".format(dimB),
+		cv2.putText(orig, "{:.2f}in".format(dimB),
 			(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
 
