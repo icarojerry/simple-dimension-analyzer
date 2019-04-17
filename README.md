@@ -14,7 +14,10 @@ Instala/Atualiza o pip
 <code>$ python3 -m pip install --user --upgrade pip</code>
 
 Verifica a versão do pip
-<code>$ py -m pip --version </code>
+<code>$ python3 -m pip --version </code>
+
+Instalar o virtualenv
+sudo pip install virtualenv
 
 Cria o ambiente virtual
 <code>$ python3 -m virtualenv env</code>
