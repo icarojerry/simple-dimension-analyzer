@@ -115,20 +115,18 @@ if __name__ == '__main__':
 
             #prepare parameters to send request
             files = {'media': img_file}
-            headers = {'Content-Type' : 'image/jpeg'}
             payload = {'distance' : dist, 'fileName': os.path.basename(img_file.name)}
 
             #send the data to server
             try:
-                response = requests.post(server['url'], data=img_file.read(), headers=headers, verify=False, params=payload)
+                response = requests.post(server['url'], data=open(picturePath, 'rb'), params=payload)
             except:
                 print("Error sending message to server: " + server['url'])
                 exit()
 
             img_file.close()
 
-            print ("Measured Distance = %.1f cm" % dist)
-            print ("Server response" % response)
+            print(response.text)
             time.sleep(0.2)
 
     except:

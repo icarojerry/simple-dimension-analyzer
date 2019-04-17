@@ -38,7 +38,6 @@ if __name__ == '__main__':
         exit()
 
     #prepare parameters to send request
-    headers = {'Content-Type' : 'multipart/form-data'}
     payload = {'distance' : dist, 'fileName': os.path.basename(img_file.name)}
 
 

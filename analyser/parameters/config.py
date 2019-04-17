@@ -1,5 +1,5 @@
 server = dict(
-    url = 'http://127.0.0.1:8000/upload/',
+    url = 'http://10.103.17.129:8000/upload/',
     dir_img = 'analyser/server/img'
 )
 
