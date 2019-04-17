@@ -8,8 +8,8 @@ client = dict(
     speed_of_sound = 349.10,
     max_distance = 4.0,
     pin = {
-    	'button': 23,
-    	'trigger': 25,
-    	'echo': 22
+    	'button': 15,
+    	'trigger': 24,
+    	'echo': 23
     }
 )
