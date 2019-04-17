@@ -14,11 +14,11 @@ from parameters.config import server
 
 
 def takePicture():
+    print('taking a picture')
     pygame.init()
     pygame.camera.init()
     cam = pygame.camera.Camera("/dev/video0", (640,480))
 
-    print ("Taking a shot:")
     cam.start()
     image = cam.get_image()
     cam.stop()
@@ -35,7 +35,7 @@ def takePicture():
 
 #capture the distance from sensor
 def distance():
-    client['speed_of_sound']
+    print('calculating the distance')
     max_delta_t = client['max_distance'] / client['speed_of_sound']
     
 
@@ -50,7 +50,7 @@ def distance():
     # Quando ECHO trocar de estado, start_t manterá seu valor, marcando
     # o momento da borda de subida de ECHO. Este é o momento em que as ondas
     # sonoras acabaram de ser enviadas pelo transmissor.
-    while GPIO.input(ECHO) == 0:
+    while GPIO.input(client['pin']['echo']) == 0:
       start_t = time.time()
  
     # Atualiza a variável end_t enquando ECHO está em alto. Quando ECHO
@@ -58,7 +58,7 @@ def distance():
     # da borda de descida de ECHO, ou o momento em que as ondas refletidas
     # por um objeto foram captadas pelo receptor. Caso o intervalo de tempo
     # seja maior que max_delta_t, o loop de espera também será interrompido.
-    while GPIO.input(ECHO) == 1 and time.time() - start_t < max_delta_t:
+    while GPIO.input(client['pin']['echo']) == 1 and time.time() - start_t < max_delta_t:
       end_t = time.time()
  
     # Se a diferença entre end_t e start_t estiver dentro dos limites impostos,
@@ -77,16 +77,16 @@ def distance():
 
 def waitingTriggerButton():
     goOut = False
-    print(client['pin']['button'])
+    print('waiting for a trigger button')
     while GPIO.input(client['pin']['button']):
         while not GPIO.input(client['pin']['button']):
-            goOut = true;
+            goOut = True;
 
         if goOut:
             time.sleep(0.5)
             break
 
-    print('Button Pressed...')
+    print('button Pressed...')
     return
 
 def setup():
