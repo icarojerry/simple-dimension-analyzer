@@ -90,14 +90,20 @@ def waitingTriggerButton():
     return
 
 def setup():
+    print("init setup")
     GPIO.setmode(GPIO.BCM)
+    print("pin mode defined")
 
     #Button to GPIO23
     GPIO.setup(client.pin['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    print("button sender configured")
     # Define TRIG como saída digital
     GPIO.setup(client.pin['trigger'], GPIO.OUT)
+    print("trigger sensor configured")
     # Define ECHO como entrada digital
     GPIO.setup(client.pin['echo'], GPIO.IN)
+    print("trigger echo configured")
+
 
 if __name__ == '__main__':
     try:
