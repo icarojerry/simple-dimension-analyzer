@@ -76,10 +76,10 @@ def distance():
 
 
 def waitingTriggerButton():
-    goOut = false
-    print(client['pin'].button)
-    while GPIO.input(client['pin'].button):
-        while not GPIO.input(client['pin'].button):
+    goOut = False
+    print(client['pin']['button'])
+    while GPIO.input(client['pin']['button']):
+        while not GPIO.input(client['pin']['button']):
             goOut = true;
 
         if goOut:
