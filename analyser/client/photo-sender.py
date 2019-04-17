@@ -67,7 +67,7 @@ def distance():
     # distância como -1, sinalizando uma medida mal-sucedida.
     if end_t - start_t < max_delta_t:
         delta_t = end_t - start_t
-        distance = 100*(0.5 * delta_t * speed_of_sound)
+        distance = 100*(0.5 * delta_t * client['speed_of_sound'])
     else:
         distance = -1
 
@@ -81,6 +81,7 @@ def waitingTriggerButton():
     while GPIO.input(client['pin']['button']):
         while not GPIO.input(client['pin']['button']):
             goOut = True;
+            time.sleep(0.1)
 
         if goOut:
             time.sleep(0.5)
