@@ -127,12 +127,11 @@ if __name__ == '__main__':
                 exit()
 
             #prepare parameters to send request
-            files = {'media': img_file}
             payload = {'distance' : dist, 'fileName': os.path.basename(img_file.name)}
 
             #send the data to server
             try:
-                response = requests.post(server['url'], data=open(picturePath, 'rb'), params=payload)
+                response = requests.post(server['url'], files={'file': open(picturePath, 'rb')}, params=payload)
             except:
                 print("Error sending message to server: " + server['url'])
                 exit()
