@@ -17,7 +17,7 @@ Verifica a versão do pip
 <code>$ python3 -m pip --version </code>
 
 Instalar o virtualenv
-sudo pip install virtualenv
+<code>sudo pip install virtualenv </code>
 
 Cria o ambiente virtual
 <code>$ python3 -m virtualenv env</code>
