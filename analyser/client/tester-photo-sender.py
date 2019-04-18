@@ -14,14 +14,13 @@ def takePicture():
 
 #capture the distance from sensor
 def distance():
-    return 11.0
+    return 22.1
 
 def waitingTriggerButton():
     return
 
 def setup():
-    print(type(client['pin']['echo']))
-    val = 0/0
+    pass
 
 if __name__ == '__main__':
     try:
