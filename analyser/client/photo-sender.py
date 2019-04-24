@@ -116,6 +116,8 @@ if __name__ == '__main__':
         setup()
         while True:
             waitingTriggerButton()
+
+            dist = 0.0
             for _ in range(3):
                 dist += distance()
 
