@@ -1,3 +1,4 @@
+from django.core.files import File 
 from analyser.parameters.config import server
 from scipy.spatial import distance as dist
 from imutils import perspective
@@ -7,13 +8,18 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+import os
 
 class PictureMapper:
 
-	def _midpoint(ptA, ptB):
+	def midpoint(self, ptA, ptB):
 		return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
-	def process(picture : Picture):
+	def process(self, picture : Picture):
+		densityA= 460.4 - 2.053 * float(picture.distance) + 0.002865 * float(picture.distance) ** 2
+		densityB= 831.7 - 3.702 * float(picture.distance) + 0.005146 * float(picture.distance) ** 2
+
+		image = cv2.imread('.' + server['dir_img'] + picture.file.name)
 		gray = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
 		gray = cv2.cvtColor(gray, cv2.COLOR_BGR2RGBA )
 		#gray = cv2.cvtColor(gray, cv2.COLOR_RGBA2BGR )
@@ -35,96 +41,83 @@ class PictureMapper:
 
 		# sort the contours from left-to-right and initialize the
 		# 'pixels per metric' calibration variable
+		#pixelsPerMetric = None
 		(cnts, _) = contours.sort_contours(cnts)
-		pixelsPerMetric = None
 
+		mapped_objects = []
 		# loop over the contours individually
-		for c in cnts:
+		for c in range(len(cnts)):
 			# if the contour is not sufficiently large, ignore it
-			if cv2.contourArea(c) < 100:
+			if cv2.contourArea(cnts[c]) < 100:
 				continue
 
 			# compute the rotated bounding box of the contour
 			orig = image.copy()
-			box = cv2.minAreaRect(c)
+			box = cv2.minAreaRect(cnts[c])
 			box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
 			box = np.array(box, dtype="int")
 
-			# order the points in the contour such that they appear
-			# in top-left, top-right, bottom-right, and bottom-left
-			# order, then draw the outline of the rotated bounding
-			# box
+			# # order the points in the contour such that they appear
+			# # in top-left, top-right, bottom-right, and bottom-left
+			# # order, then draw the outline of the rotated bounding
+			# # box
 			box = perspective.order_points(box)
 			cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
 
-			# loop over the original points and draw them
+			# # loop over the original points and draw them
 			for (x, y) in box:
 				cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
 
-			# unpack the ordered bounding box, then compute the midpoint
-			# between the top-left and top-right coordinates, followed by
-			# the midpoint between bottom-left and bottom-right coordinates
+			# # unpack the ordered bounding box, then compute the midpoint
+			# # between the top-left and top-right coordinates, followed by
+			# # the midpoint between bottom-left and bottom-right coordinates
 			(tl, tr, br, bl) = box
-			(tltrX, tltrY) = _midpoint(tl, tr)
-			(blbrX, blbrY) = _midpoint(bl, br)
+			(tltrX, tltrY) = self.midpoint(tl, tr)
+			(blbrX, blbrY) = self.midpoint(bl, br)
 
-			# compute the midpoint between the top-left and top-right points,
-			# followed by the midpoint between the top-righ and bottom-right
-			(tlblX, tlblY) = _midpoint(tl, bl)
-			(trbrX, trbrY) = _midpoint(tr, br)
-
-			print("tl: " + str(tl))
-			print("tr: " + str(tr))
-			print("br: " + str(br))
-			print("bl: " + str(bl))
-			print("tltrX: " + str(tltrX))
-			print("tltrY: " + str(tltrY))
-			print("blbrX: " + str(blbrX))
-			print("blbrY: " + str(blbrY))
-			print("tlblX: " + str(tlblX))
-			print("tlblY: " + str(tlblY))
-			print("trbrX: " + str(trbrX))
-			print("trbrY: " + str(trbrY))
+			# # compute the midpoint between the top-left and top-right points,
+			# # followed by the midpoint between the top-righ and bottom-right
+			(tlblX, tlblY) = self.midpoint(tl, bl)
+			(trbrX, trbrY) = self.midpoint(tr, br)
 			
-			# draw the midpoints on the image
+			# # draw the midpoints on the image
 			cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
 			cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
 			cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
 			cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
 
-			# draw lines between the midpoints
+			# # draw lines between the midpoints
 			cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
 				(255, 0, 255), 2)
 			cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
 				(255, 0, 255), 2)
 
-			# compute the Euclidean distance between the midpoints
+			# # compute the Euclidean picture.distance between the midpoints
 			dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
 			dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
-			print("dA: " + str(dA))
-			print("dA: " + str(dB))
-			
+			# # if the pixels per metric has not been initialized, then
+			# # compute it as the ratio of pixels to supplied metric
+			# # (in this case, inches)
+			# if pixelsPerMetric is None:
+			# 	pixelsPerMetric = dB / pictureWidth
 
-			# if the pixels per metric has not been initialized, then
-			# compute it as the ratio of pixels to supplied metric
-			# (in this case, inches)
-			if pixelsPerMetric is None:
-				pixelsPerMetric = dB / pictureWidth
+			# # compute the size of the object
+			dimA = (dA/(densityA)/25.4)*48
 
-			# compute the size of the object
-			dimA = dA / pixelsPerMetric
-			dimB = dB / pixelsPerMetric
-
-			print("dimA: " + str(dimA))
-			print("dimB: " + str(dimB))
-
-			# draw the object sizes on the image
-			cv2.putText(orig, "{:.1f}in".format(dimA),
+			dimB = (dB/(densityB)/25.4)*88
+			# # draw the object sizes on the image
+			cv2.putText(orig, "{:.1f} mm".format(dimA),
 				(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
-			cv2.putText(orig, "{:.1f}in".format(dimB),
+			cv2.putText(orig, "{:.1f} mm".format(dimB),
 				(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
 
-			# show the output image
+			#
+			mapped_object_path = '.' + server['dir_img'] + str(c) + '_' + os.path.basename(picture.file.name)
+			mapped_object = MappedObject(file = File(cv2.imwrite(mapped_object_path, orig)), item_number = c, picture = picture, area = float(dimA) * float(dimB))
+			mapped_object.save()
+			mapped_objects.append(mapped_object)
+
+		return mapped_objects

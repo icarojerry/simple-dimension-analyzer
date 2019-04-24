@@ -14,7 +14,7 @@ def takePicture():
 
 #capture the distance from sensor
 def distance():
-    return 22.1
+    return 374.0
 
 def waitingTriggerButton():
     return

@@ -14,11 +14,8 @@ def _midpoint(ptA, ptB):
 	return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 def _calc_image_size(imagePath, distance, pictureWidth):
-	a= -2.3088
-	b= 85.957
-	densidade= a * distance + b 
-
-	print('densidade: ' + str(densidade))
+	densidadeHorizontal= 831.7-3.702*distance+0.005146*distance**2
+	densidadeVertical= 460.4-2.053*distance+0.002865*distance**2
 
 	image = cv2.imread(imagePath)
 
@@ -78,19 +75,6 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 		# followed by the midpoint between the top-righ and bottom-right
 		(tlblX, tlblY) = _midpoint(tl, bl)
 		(trbrX, trbrY) = _midpoint(tr, br)
-
-		print("tl: " + str(tl))
-		print("tr: " + str(tr))
-		print("br: " + str(br))
-		print("bl: " + str(bl))
-		print("tltrX: " + str(tltrX))
-		print("tltrY: " + str(tltrY))
-		print("blbrX: " + str(blbrX))
-		print("blbrY: " + str(blbrY))
-		print("tlblX: " + str(tlblX))
-		print("tlblY: " + str(tlblY))
-		print("trbrX: " + str(trbrX))
-		print("trbrY: " + str(trbrY))
 		
 		# draw the midpoints on the image
 		cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
@@ -108,16 +92,9 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 		dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
 		dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
-		print("dA: " + str(dA))
-		print("dB: " + str(dB))
-		
-
 		# compute the size of the object
-		dimA = dA / (densidade / 2.54)
-		dimB = dB / (densidade / 2.54)
-
-		print("dimA: " + str(dimA))
-		print("dimB: " + str(dimB))
+		dimA = (dA/(densidadeVertical)/25.4) * 48
+		dimB = (dB/(densidadeHorizontal)/25.4) * 88
 
 		# draw the object sizes on the image
 		cv2.putText(orig, "{:.2f}in".format(dimA),

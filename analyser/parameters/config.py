@@ -1,6 +1,6 @@
 server = dict(
     url = 'http://127.0.0.1:8000/upload/',
-    dir_img = 'analyser/server/img'
+    dir_img = '/media/'
 )
 
 client = dict(
