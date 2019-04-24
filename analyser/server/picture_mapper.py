@@ -107,10 +107,10 @@ class PictureMapper:
 
 			dimB = (dB/(densityB)/25.4)*88
 			# # draw the object sizes on the image
-			cv2.putText(orig, "{:.1f} mm".format(dimA),
+			cv2.putText(orig, "{:.1f} inch".format(dimA),
 				(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
-			cv2.putText(orig, "{:.1f} mm".format(dimB),
+			cv2.putText(orig, "{:.1f} inch".format(dimB),
 				(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
 

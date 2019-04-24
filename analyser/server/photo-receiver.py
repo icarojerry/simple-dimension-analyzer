@@ -14,8 +14,14 @@ def _midpoint(ptA, ptB):
 	return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 def _calc_image_size(imagePath, distance, pictureWidth):
+
+	
 	densidadeHorizontal= 831.7-3.702*distance+0.005146*distance**2
 	densidadeVertical= 460.4-2.053*distance+0.002865*distance**2
+
+	print('densidade: ' + str(densidadeHorizontal))
+	print('densidade: ' + str(densidadeVertical))
+	print('distancia: ' + str(distance))
 
 	image = cv2.imread(imagePath)
 
@@ -75,8 +81,22 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 		# followed by the midpoint between the top-righ and bottom-right
 		(tlblX, tlblY) = _midpoint(tl, bl)
 		(trbrX, trbrY) = _midpoint(tr, br)
+
+		print("tl: " + str(tl))
+		print("tr: " + str(tr))
+		print("br: " + str(br))
+		print("bl: " + str(bl))
+		print("tltrX: " + str(tltrX))
+		print("tltrY: " + str(tltrY))
+		print("blbrX: " + str(blbrX))
+		print("blbrY: " + str(blbrY))
+		print("tlblX: " + str(tlblX))
+		print("tlblY: " + str(tlblY))
+		print("trbrX: " + str(trbrX))
+		print("trbrY: " + str(trbrY))
 		
 		# draw the midpoints on the image
+		
 		cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
 		cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
 		cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
@@ -92,25 +112,34 @@ def _calc_image_size(imagePath, distance, pictureWidth):
 		dA = dist.euclidean((tltrX, tltrY), (blbrX, blbrY))
 		dB = dist.euclidean((tlblX, tlblY), (trbrX, trbrY))
 
+		print("dA: " + str(dA))
+		print("dB: " + str(dB))
+		
+
 		# compute the size of the object
-		dimA = (dA/(densidadeVertical)/25.4) * 48
-		dimB = (dB/(densidadeHorizontal)/25.4) * 88
+		
+		#dimA = dA / (densidade / 2.54)
+		dimA = (dA/(densidadeVertical)/25.4)*48
+		dimB = (dB/(densidadeHorizontal)/25.4)*88
+
+		print("dimA: " + str(dimA))
+		print("dimB: " + str(dimB))
 
 		# draw the object sizes on the image
-		cv2.putText(orig, "{:.2f}in".format(dimA),
+		cv2.putText(orig, "{:.1f}in".format(dimA),
 			(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
-		cv2.putText(orig, "{:.2f}in".format(dimB),
+		cv2.putText(orig, "{:.1f}in".format(dimB),
 			(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
 
-		# show the output image
+		# show the output im age
 		cv2.imshow("Image", orig)
 		cv2.waitKey(0)
 
 
 if __name__ == '__main__':
-	distanceCam = 21.3
-	picturePath = server['dir_img'] + '/2019-04-17_171601.jpg'
+	distanceCam = 345.0
+	picturePath = './analyser/client/img/345.jpg'
 
 	_calc_image_size(picturePath, distanceCam, 1.0)
