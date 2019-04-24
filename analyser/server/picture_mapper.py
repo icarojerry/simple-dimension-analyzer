@@ -16,8 +16,10 @@ class PictureMapper:
 		return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 	def process(self, picture : Picture):
-		densityA= 460.4 - 2.053 * float(picture.distance) + 0.002865 * float(picture.distance) ** 2
-		densityB= 831.7 - 3.702 * float(picture.distance) + 0.005146 * float(picture.distance) ** 2
+		distance = picture.distance * 10
+        
+		densityA= 460.4 - 2.053 * float(distance) + 0.002865 * float(distance) ** 2
+		densityB= 831.7 - 3.702 * float(distance) + 0.005146 * float(distance) ** 2
 
 		image = cv2.imread('.' + server['dir_img'] + picture.file.name)
 		gray = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
@@ -101,16 +103,26 @@ class PictureMapper:
 			# # (in this case, inches)
 			# if pixelsPerMetric is None:
 			# 	pixelsPerMetric = dB / pictureWidth
-
+    
+			print('distance- '+ str(float(distance)))
 			# # compute the size of the object
+			#densidadeVertical
 			dimA = (dA/(densityA)/25.4)*48
+			print('dimA- ' + str(dimA))
+			print('densityA- ' + str(densityA))
+			print('dA- ' + str(dA))
 
+            #densidadeHorizontal
 			dimB = (dB/(densityB)/25.4)*88
+			print('dimB- ' + str(dimB))
+			print('densityB- ' + str(densityB))
+			print('dB- ' + str(dB))
+			
 			# # draw the object sizes on the image
-			cv2.putText(orig, "{:.1f} mm".format(dimA),
+			cv2.putText(orig, "{:.1f} inch".format(dimA),
 				(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
-			cv2.putText(orig, "{:.1f} mm".format(dimB),
+			cv2.putText(orig, "{:.1f} inch".format(dimB),
 				(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 				0.65, (255, 255, 255), 2)
 

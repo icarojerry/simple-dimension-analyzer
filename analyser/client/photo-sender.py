@@ -116,7 +116,10 @@ if __name__ == '__main__':
         setup()
         while True:
             waitingTriggerButton()
-            dist = distance()
+            for _ in range(3):
+                dist += distance()
+
+            dist = dist / 3
             print("distance: " + str(dist))
             picturePath = takePicture()
 

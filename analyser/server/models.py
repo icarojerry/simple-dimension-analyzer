@@ -17,4 +17,4 @@ class MappedObject(models.Model):
 		super(MappedObject, self).__init__(*args, **kwargs)
 
 	def __str__(self):
-		return 'Object: ' + str(self.item_number) + " with area = " +  "{:.2f} mm".format(self.area)
+		return 'Object: ' + str(self.item_number) + " with area = " +  "{:.2f} inch^2".format(self.area)
