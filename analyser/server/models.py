@@ -5,7 +5,7 @@ class Picture(models.Model):
 	distance = models.DecimalField(null=True, blank=True, default=-1.0,  max_digits=5, decimal_places=2)
 
 	def __str__(self):
-		return self.file.name + '| Total Mapped objects:' + str(len(MappedObject.objects.filter(picture=self)))  + ' |' + str(MappedObject.objects.get(picture=self))
+		return self.file.name + '| Total Mapped objects:' + str(len(MappedObject.objects.filter(picture=self)))  + ' |' + str(MappedObject.objects.filter(picture=self))
 
 class MappedObject(models.Model):
 	item_number = models.IntegerField(null=True, blank=True)
@@ -17,4 +17,4 @@ class MappedObject(models.Model):
 		super(MappedObject, self).__init__(*args, **kwargs)
 
 	def __str__(self):
-		return 'Object: ' + str(self.item_number) + " with area = " +  "{:.2f} inch^2".format(self.area)
+		return 'Object: ' + str(self.item_number + 1) + " with area = " +  "{:.2f} inch^2".format(self.area)
